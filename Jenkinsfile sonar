@@ -8,10 +8,42 @@ pipeline {
         }
         stage('build') {
         steps {
-            withSonarQubeEnv('sonarqube') {
+            withSonarQubeEnv('sonar') {
                  sh 'mvn clean package sonar:sonar'
               }
            }
         }
-    }
-}
+        stage('package'){
+        steps {
+            sh 'mvn package'
+        }
+        }
+         stage ('artifactory') {
+             steps {
+               rtMavenDeployer (
+                    id: "MAVEN_DEPLOYER",
+                    serverId: "spc",
+                    releaseRepo: "default-libs-release-local",
+                    snapshotRepo: "default-libs-snapshot-local"
+                )
+             }
+            }
+            stage ('Exec Maven') {
+            steps {
+                rtMavenRun (
+                    tool: "Maven 3.6.3", // Tool name from Jenkins configuration
+                    pom: 'pom.xml',
+                    goals: 'clean install',
+                    deployerId: "MAVEN_DEPLOYER"
+                )
+            }
+        }
+         stage ('Publish build info') {
+            steps {
+                rtPublishBuildInfo (
+                    serverId: "spc"
+                )
+            }
+        }
+       }
+    } 

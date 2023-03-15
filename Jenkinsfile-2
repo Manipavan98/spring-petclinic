@@ -1,0 +1,26 @@
+pipeline {
+    agent { label 'jdk11' }
+    stages {
+        stage('vcs') {
+            steps {
+                git url: 'https://github.com/spring-projects/spring-petclinic.git', 
+                    branch: 'main'
+            }     
+        }
+        stage('package') {
+            steps{
+                sh 'mvn package'
+            }
+            }
+            stage('folder creation') {
+                steps{
+                    sh 'mkdir -p "/tmp/archive/${JOB_NAME}/${BUILD_ID}"'  
+                }
+             }
+             stage('copying jarfile') {
+                steps{
+                    sh 'cp "${WORKSPACE}target/spring-petclinic-3.0.0-SNAPSHOT.jar" "/tmp/archive/${JOB_NAME}/${BUILD_ID}"/spring-petclinic-3.0.0-SNAPSHOT.jar'  
+                }
+            }
+        }
+    }

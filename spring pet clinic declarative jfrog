@@ -10,9 +10,9 @@ pipeline {
        stages {
            stage ('vcs') {
             steps {
-              mail subject: "Build Started for Jenkins JOB $env.JOB_NAME",
-                   body: "Build Started for Jenkins JOB $env.JOB_NAME",
-                   to: 'manipavan98@gmail.com'
+              //mail subject: "Build Started for Jenkins JOB $env.JOB_NAME",
+              //   body: "Build Started for Jenkins JOB $env.JOB_NAME",
+               //    to: 'manipavan98@gmail.com'
               git url: 'https://github.com/Manipavan98/spring-petclinic.git',
               branch: "${params.BRACH_TO_BUILD}"
                 //branch: 'main'
