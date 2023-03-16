@@ -23,8 +23,8 @@ pipeline {
                rtMavenDeployer (
                     id: "MAVEN_DEPLOYER",
                     serverId: "spc",
-                    releaseRepo: "default-libs-release-local",
-                    snapshotRepo: "default-libs-snapshot-local"
+                    releaseRepo: "b06-libs-release-local",
+                    snapshotRepo: "b06-libs-snapshot-local"
                 )
              }
             }
